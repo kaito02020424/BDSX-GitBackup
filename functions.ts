@@ -61,7 +61,7 @@ const getDate = () => {
     const min = date.getMinutes()
     const s = date.getSeconds()
 
-    return `${y}${m}${d}-${h}${min}${s}`
+    return `${y}${m.toString().length == 1 ? "0" : ""}${m}${d.toString().length == 1 ? "0" : ""}${d}-${h.toString().length == 1 ? "0" : ""}${h}${min.toString().length == 1 ? "0" : ""}${min}${s.toString().length == 1 ? "0" : ""}${s}`
 }
 
 const rmDir = (path: string): Promise<void> => {
