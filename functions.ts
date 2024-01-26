@@ -11,9 +11,9 @@ export const copyWorld = async () => {
     bedrockServer.executeCommand("save hold")
     await queryPromise()
     if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
-        rimraf.sync(path.resolve(__dirname, "./backup/Bedrock level"))
+        await rmDir(path.resolve(__dirname, "./backup/Bedrock level"))
     }
-    fs.copySync(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
+    await fs.copy(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
         await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
     }
@@ -57,3 +57,12 @@ export const getDate = () => {
 
     return `${y}${m}${d}-${h}${min}${s}`
 }
+
+const rmDir = (path: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        rimraf(path, (err) => {
+            if (err) reject(err)
+            else resolve()
+        })
+    })
+} 
