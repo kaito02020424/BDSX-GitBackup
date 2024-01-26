@@ -10,7 +10,7 @@ export const copyWorld = async () => {
     bedrockServer.executeCommand("save hold")
     await queryPromise()
     if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
-        fs.rmSync(path.resolve(__dirname, "./backup/Bedrock level"), { recursive: true, force: true })
+        fs.rmSync(path.resolve(__dirname, "./backup/Bedrock level"))
     }
     fs.copySync(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
