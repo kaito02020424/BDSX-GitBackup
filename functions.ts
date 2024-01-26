@@ -3,6 +3,7 @@ import { config } from "./config"
 import * as fs from "fs-extra"
 import * as path from "path"
 import { exec } from "child_process"
+import { CommandResultType } from "bdsx/commandresult"
 
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
@@ -23,7 +24,7 @@ export const copyWorld = async () => {
 export const queryPromise = (waitMs: number = 100): Promise<void> => {
     return new Promise(r => {
         const timer = setInterval(() => {
-            const result = bedrockServer.executeCommand("save query")
+            const result = bedrockServer.executeCommand("save query",CommandResultType.Data)
             if (result.data.statusCode === 0) {
                 clearInterval(timer)
                 r()
