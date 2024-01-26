@@ -7,7 +7,7 @@ let joinedPlayer: boolean = false
 let lastBackup:number = 0
 let timer:NodeJS.Timeout;
 events.serverOpen.on(async () => {
-    if (!config.launchBackup) {
+    if (config.launchBackup) {
         await copyWorld()
         lastBackup = Date.now()
     }
@@ -15,6 +15,7 @@ events.serverOpen.on(async () => {
         if (Date.now() - lastBackup > config.backupSettings.backupIntervalSec * 1000 && (!config.backupSettings.checkJoinedPlayer || (config.backupSettings.checkJoinedPlayer && joinedPlayer))) {
             await copyWorld()
             joinedPlayer = bedrockServer.level.getPlayers().length >= 1 ? true : false
+            lastBackup = Date.now()
         }
     }, config.backupSettings.checkSec * 1000)
 })
