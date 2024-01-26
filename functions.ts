@@ -9,9 +9,6 @@ export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
     await queryPromise()
-    if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
-        fs.removeSync(path.resolve(__dirname, "./backup/Bedrock level"))
-    }
     fs.copyFileSync(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level"))
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
         await exec(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
