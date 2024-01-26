@@ -4,8 +4,8 @@
     "description": "Example for bdsx plugin",
     "main": "index.js",
     "keywords": [],
-    "author": "karikera <karikera3@hotmail.com> (https://rua.kr/)",
-    "license": "ISC",
+    "author": "kaito02020424",
+    "license": "MIT",
     "bdsxPlugin": true,
     "scripts": {
         "build": "tsc",

@@ -22,7 +22,7 @@ export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lFinish Backup!"))
 }
 
-export const queryPromise = (waitMs: number = 100): Promise<void> => {
+const queryPromise = (waitMs: number = 100): Promise<void> => {
     return new Promise(r => {
         const timer = setInterval(() => {
             const result = bedrockServer.executeCommand("save query", CommandResultType.Data)
@@ -34,7 +34,7 @@ export const queryPromise = (waitMs: number = 100): Promise<void> => {
     })
 }
 
-export const execPromise = (cmd: string): Promise<string> => {
+const execPromise = (cmd: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         exec(cmd, (err, stdout, stderr) => {
             if (err) {
@@ -46,7 +46,7 @@ export const execPromise = (cmd: string): Promise<string> => {
     })
 }
 
-export const getDate = () => {
+const getDate = () => {
     const date = new Date()
     const y = date.getFullYear()
     const m = date.getMonth() + 1
