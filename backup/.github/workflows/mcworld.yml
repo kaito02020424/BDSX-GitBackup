@@ -1,0 +1,25 @@
+name: Main
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install zip
+        run: sudo apt install zip
+      - name: Get current date and time
+        env: 
+          TZ: "Asia/Tokyo" # タイムゾーンを指定
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M%S')"
+      - name: Build
+        run: cd "Bedrock level" && zip -r ../${{ steps.date.outputs.date }}.mcworld ./*
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.date.outputs.date }}
+          files: |
+            ${{ steps.date.outputs.date }}.mcworld
