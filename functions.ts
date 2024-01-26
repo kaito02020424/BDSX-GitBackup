@@ -4,13 +4,14 @@ import * as fs from "fs-extra"
 import * as path from "path"
 import { exec } from "child_process"
 import { CommandResultType } from "bdsx/commandresult"
+import * as rimraf from "rimraf"
 
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
     await queryPromise()
     if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
-        fs.rmSync(path.resolve(__dirname, "./backup/Bedrock level"))
+        rimraf.sync(path.resolve(__dirname, "./backup/Bedrock level"))
     }
     fs.copySync(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
