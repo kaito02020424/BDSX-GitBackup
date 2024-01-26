@@ -14,9 +14,9 @@ export const copyWorld = async () => {
     }
     fs.copySync(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
-        await exec(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
     }
-    await exec(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
+    await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
     bedrockServer.executeCommand("save resume")
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lFinish Backup!"))
 }
