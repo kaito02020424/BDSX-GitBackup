@@ -22,7 +22,11 @@ export const copyWorld = async () => {
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
         await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
     }
-    await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
+    try {
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
+    } catch (e) {
+        console.log(e)
+    }
     bedrockServer.executeCommand("save resume")
     console.log(`[Git-Backup][${getDate()}] Finish ALL Backup!(3/3)`)
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lFinish Backup!"))
