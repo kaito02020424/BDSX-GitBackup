@@ -9,15 +9,15 @@ export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
     await queryPromise()
-    if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
-        fs.removeSync(path.resolve(__dirname, "./backup/Bedrock level"))
+    if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level").replace(/\\/g,"/"))) {
+        fs.removeSync(path.resolve(__dirname, "./backup/Bedrock level").replace(/\\/g,"/"))
     }
-    fs.mkdirSync(path.resolve(__dirname, "./backup/Bedrock level"))
-    fs.copyFileSync(path.resolve(__dirname, `../../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level"))
-    if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
-        await exec(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
+    fs.mkdirSync(path.resolve(__dirname, "./backup/Bedrock level").replace(/\\/g,"/"))
+    fs.copyFileSync(path.resolve(__dirname, `../../../bedrock_server/worlds/${config.worldName}`).replace(/\\/g,"/"), path.resolve(__dirname, "./backup/Bedrock level").replace(/\\/g,"/"))
+    if (!fs.existsSync(path.resolve(__dirname, "./backup/.git").replace(/\\/g,"/"))) {
+        await exec(`cd ${path.resolve(__dirname, "./backup").replace(/\\/g,"/")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
     }
-    await exec(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
+    await exec(`cd ${path.resolve(__dirname, "./backup").replace(/\\/g,"/")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
     bedrockServer.executeCommand("save resume")
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lFinish Backup!"))
 }
