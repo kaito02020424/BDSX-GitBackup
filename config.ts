@@ -8,7 +8,8 @@ export const config: {
         backupIntervalSec: number,  //バックアップ同士の間隔
         checkJoinedPlayer: boolean  //プレイヤーが入っていたワールドのみバックアップを行うか
     },
-    platform?: "windows" | "linux"
+    platform?: "windows" | "linux",  //サーバーのplatformを指定(default:"windows")
+    gitPath?: string  //platform == "linux"のとき,gitのPathを指定(設定がない場合,default:"Z:\usr\bin\git")
 } = {
     launchBackup: true,
     githubUrl: "",
@@ -19,5 +20,6 @@ export const config: {
         backupIntervalSec: 60 * 60,
         checkJoinedPlayer: true
     },
-    platform: "windows"
+    platform: "windows",
+    gitPath: undefined
 }

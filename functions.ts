@@ -7,6 +7,7 @@ import { CommandResultType } from "bdsx/commandresult"
 import * as rimraf from "rimraf"
 
 const worldPath = (config.platform == undefined || config.platform == "windows") ? `../../bedrock_server/worlds/${config.worldName}` : `../../../bedrock_server/worlds/${config.worldName}`
+const gitCommand = config.platform == "windows" ? "git" : (config.gitPath == undefined ? "Z:\\usr\\bin\\git" : config.gitPath)
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
@@ -21,10 +22,10 @@ export const copyWorld = async () => {
     console.log(`[Git-Backup][${getDate()}] Finish copying(2/3)`)
     console.log(`[Git-Backup][${getDate()}] Start adding to Git...(2/3)`)
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {
-        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git init && git remote add origin ${config.githubUrl} && git branch -M main`)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} init && ${gitCommand} remote add origin ${config.githubUrl} && ${gitCommand} branch -M main`)
     }
     try {
-        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && git add . && git commit -m "[AutoBackup] ${getDate()}" && git push origin main`)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} add . && ${gitCommand} commit -m "[AutoBackup] ${getDate()}" && ${gitCommand} push origin main`)
     } catch (e) {
         console.log(e)
     }
