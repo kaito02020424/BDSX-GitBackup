@@ -9,14 +9,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install zip
-        run: sudo apt install zip
+        run: curl -1sLf 'https://dl.cloudsmith.io/public/pzip/stable/setup.deb.sh' | sudo -E bash && sudo apt update && sudo apt install pzip
       - name: Get current date and time
         env: 
           TZ: "Asia/Tokyo" # タイムゾーンを指定
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M%S')"
       - name: Build
-        run: cd "Bedrock level" && zip -r ../${{ steps.date.outputs.date }}.mcworld ./*
+        run: cd "Bedrock level" && pzip ../${{ steps.date.outputs.date }}.mcworld ./*
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
