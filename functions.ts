@@ -6,6 +6,7 @@ import { exec } from "child_process"
 import { CommandResultType } from "bdsx/commandresult"
 import * as rimraf from "rimraf"
 
+const worldPath = (config.platform == undefined || config.platform == "windows") ? `../../bedrock_server/worlds/${config.worldName}` : `../../../bedrock_server/worlds/${config.worldName}`
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
@@ -16,7 +17,7 @@ export const copyWorld = async () => {
     if (fs.existsSync(path.resolve(__dirname, "./backup/Bedrock level"))) {
         await rmDir(path.resolve(__dirname, "./backup/Bedrock level"))
     }
-    await fs.copy(path.resolve(__dirname, `../../bedrock_server/worlds/${config.worldName}`), path.resolve(__dirname, "./backup/Bedrock level/"))
+    await fs.copy(path.resolve(__dirname, worldPath), path.resolve(__dirname, "./backup/Bedrock level/"))
     console.log(`[Git-Backup][${getDate()}] Finish copying(2/3)`)
     console.log(`[Git-Backup][${getDate()}] Start adding to Git...(2/3)`)
     if (!fs.existsSync(path.resolve(__dirname, "./backup/.git"))) {

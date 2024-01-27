@@ -7,7 +7,8 @@ export const config: {
         checkSec: number,  //バックアップができるかを確認する間隔(backupIntervalSecの3分の1程度を推奨)
         backupIntervalSec: number,  //バックアップ同士の間隔
         checkJoinedPlayer: boolean  //プレイヤーが入っていたワールドのみバックアップを行うか
-    }
+    },
+    platform?: "windows" | "linux"
 } = {
     launchBackup: true,
     githubUrl: "",
@@ -17,5 +18,6 @@ export const config: {
         checkSec: 60 * 3,
         backupIntervalSec: 60 * 60,
         checkJoinedPlayer: true
-    }
+    },
+    platform: "windows"
 }
