@@ -19,7 +19,7 @@
 - This plugin is suitable for servers with a world size of ~200MB.  
   - Worlds that expand in size, such as survival servers, require time for network communication and registration with Git.  
 - If you are using a private repository (no one will probably make the server world public), watch out for the execution time of the job in GitHub Actions.  
-  - For a world of about 1.7 GB, it takes about 3 min to execute a job.  
+  - For a world of about 1.7 GB, it takes about 2 min to execute a job.  
 - If an error (e.g. 403) occurs in the release job, Go to `Repository Settings -> Actions -> General -> Workflow permissions` and check `Read and write permissions`.  
 
 ## Credits & Thanks
