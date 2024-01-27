@@ -6,20 +6,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install zip async
+        run: (curl -1sLf 'https://dl.cloudsmith.io/public/pzip/stable/setup.deb.sh' | sudo -E bash && sudo apt update && sudo apt install -y pzip) &
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install zip
-        run: curl -1sLf 'https://dl.cloudsmith.io/public/pzip/stable/setup.deb.sh' | sudo -E bash && sudo apt update && sudo apt install pzip
       - name: Get current date and time
         env: 
           TZ: "Asia/Tokyo" # タイムゾーンを指定
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M%S')"
+        run: echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
       - name: Build
-        run: cd "Bedrock level" && pzip ../${{ steps.date.outputs.date }}.mcworld ./*
+        run: cd "Bedrock level" && wait && pzip --concurrency 4 ../${{ env.date }}.mcworld ./*
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.date.outputs.date }}
+          tag_name: ${{ env.date }}
           files: |
-            ${{ steps.date.outputs.date }}.mcworld
+            ${{ env.date }}.mcworld
