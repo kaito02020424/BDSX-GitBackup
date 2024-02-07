@@ -7,7 +7,7 @@ import { CommandResultType } from "bdsx/commandresult"
 import * as rimraf from "rimraf"
 
 const worldPath = (config.platform == undefined || config.platform == "windows") ? `../../bedrock_server/worlds/${config.worldName}` : `../../../bedrock_server/worlds/${config.worldName}`
-const gitCommand = config.platform == "windows" ? "git" : (config.gitPath == undefined ? "Z:\\usr\\bin\\git" : config.gitPath)
+const gitCommand = ["windows", undefined].includes(config.platform) ? "git" : (config.gitPath == undefined ? "Z:\\usr\\bin\\git" : config.gitPath)
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
