@@ -8,6 +8,7 @@ import * as rimraf from "rimraf"
 
 const worldPath = (config.platform == undefined || config.platform == "windows") ? `../../bedrock_server/worlds/${config.worldName}` : `../../../bedrock_server/worlds/${config.worldName}`
 const gitCommand = ["windows", undefined].includes(config.platform) ? "git" : (config.gitPath == undefined ? "Z:\\usr\\bin\\git" : config.gitPath)
+const waitMS = (["windows", undefined].includes(config.platform) ? 0 : 5000)
 export const copyWorld = async () => {
     if (config.noticeToPlayer) bedrockServer.level.getPlayers().forEach(player => player.sendMessage("§lStart Backup..."))
     bedrockServer.executeCommand("save hold")
@@ -25,7 +26,11 @@ export const copyWorld = async () => {
         await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} init && ${gitCommand} remote add origin ${config.githubUrl} && ${gitCommand} branch -M main`)
     }
     try {
-        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} add . && ${gitCommand} commit -m "[AutoBackup] ${getDate()}" && ${gitCommand} push origin main`)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} add .`)
+        await wait(waitMS)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} commit -m "[AutoBackup] ${getDate()}"`)
+        await wait(waitMS)
+        await execPromise(`cd ${path.resolve(__dirname, "./backup")} && ${gitCommand} push origin main`)
     } catch (e) {
         console.log(e)
     }
@@ -77,4 +82,10 @@ const rmDir = (path: string): Promise<void> => {
             else resolve()
         })
     })
-} 
+}
+
+const wait = (ms: number): Promise<void> => {
+    return new Promise(r => {
+        setTimeout(r, ms)
+    })
+}
